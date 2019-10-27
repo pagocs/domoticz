@@ -68,15 +68,17 @@ IF(USE_BUILTIN_LUA)
   get_directory_property (LUA_LIBRARIES DIRECTORY lua
     DEFINITION LUA_LIBRARIES)
 ELSE(USE_BUILTIN_LUA)
+    # TODO: It should update to 5.3 version
+    # This is just a dirty fix
   find_package(PkgConfig)
-  pkg_search_module(LUA lua5.2>=5.2 lua>=5.2 lua-5.2)
+  pkg_search_module(LUA lua5.3>=5.3 lua>=5.3 lua-5.3)
   IF(LUA_FOUND)
     # Lua 5.2 pkg-config is broken.
     # Depending on whether the used distro fixed that to
     # provide backward compatibility we need to find the
     # include dir and library name ourselves.
     IF(NOT LUA_INCLUDE_DIRS)
-      find_path(LUA_INC_DIRS NAMES "lua.h" PATH_SUFFIXES "lua5.2")
+      find_path(LUA_INC_DIRS NAMES "lua.h" PATH_SUFFIXES "lua5.3")
       set(LUA_INCLUDE_DIRS ${LUA_INC_DIRS})
     ENDIF(NOT LUA_INCLUDE_DIRS)
     message(STATUS "Found lua.h at: ${LUA_INCLUDE_DIRS}")
@@ -85,7 +87,7 @@ ELSE(USE_BUILTIN_LUA)
     IF(LUA_LIBRARY_DIRS)
       link_directories(${LUA_LIBRARY_DIRS})
     ELSE(LUA_LIBRARY_DIRS)
-      find_library(LUA_LIB NAMES lua lua5.2)
+      find_library(LUA_LIB NAMES lua lua5.3)
       message(STATUS "Found lua library at: ${LUA_LIB}")
       set(LUA_LIBRARIES ${LUA_LIB})
     ENDIF(LUA_LIBRARY_DIRS)
